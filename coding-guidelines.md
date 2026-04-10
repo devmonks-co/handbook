@@ -51,6 +51,74 @@ Complexity is a signal. Listen to it.
 - Delete it. Git remembers.
 - Commented-out code is noise that ages into confusion.
 
+## 8. No hardcoding
+
+Nothing environment-specific, secret, or configurable should live in source code — backend or frontend.
+
+- **Secrets and credentials** → environment variables, never committed
+- **API URLs, endpoints, base paths** → environment variables or config files
+- **Feature flags, limits, timeouts** → config, not literals
+- **Magic numbers and strings** → named constants with clear intent
+- **Environment-specific values** (dev/staging/prod) → config, never inline
+
+If a value might change between environments, between clients, or over time, it doesn't belong in the code.
+
+`.env.example` should always exist and stay up to date so anyone can spin up the project.
+
+## 9. Handle errors at the top, not everywhere
+
+Don't sprinkle `try/catch` blocks throughout the code. They make logic harder to read and often swallow errors silently.
+
+### Default behaviour
+
+- **Let errors propagate** to the top level of the application and handle them in one place.
+- **Catch lower only when you have a specific reason** — retrying a transient failure, providing a fallback, or adding context before re-throwing.
+- **Never catch just to log and continue.** If you can't handle it meaningfully, let it propagate.
+- **No empty catches.** A swallowed error is a future bug you can't debug.
+
+### Operational vs programmer errors
+
+Two different things, handled differently:
+
+- **Operational errors** are expected runtime failures — network timeouts, missing files, invalid input from users. Handle these gracefully.
+- **Programmer errors** are bugs — null dereferences, wrong arguments, type errors. **Let them crash.** Catching bugs hides them; fix the code instead.
+
+Treating bugs as recoverable failures is the most common mistake. Don't do it.
+
+### Catch narrowly, not broadly
+
+- Catch specific error types or classes — not "any error."
+- Bare catches (e.g. `except:` in Python, `catch (e)` in JS without checks) hide the errors you didn't expect, including critical signals like cancellations or interrupts.
+
+### Async errors
+
+- Always `await` inside the `try` block — naked promises swallow errors.
+- Never leave fire-and-forget async calls without an explicit error handler.
+- Set up a global handler for unhandled promise rejections and uncaught exceptions. Log and exit — don't try to keep running in an unknown state.
+
+### Custom error classes
+
+For non-trivial codebases, define a small hierarchy of domain-specific error types (e.g. `ValidationError`, `NotFoundError`, `ExternalServiceError`).
+
+- Enables narrow catches
+- Makes the top-level handler easy to write (one error type → one response)
+- Improves grouping in error reporting tools
+- Keep the hierarchy shallow — 2-3 levels max
+
+### Preserve the error chain
+
+When you do catch and re-throw, **wrap, don't replace**. Keep the original error attached as the cause so the stack trace and context survive.
+
+Anti-pattern: catching an error and throwing a brand new one with just the message — you lose the stack trace and the root cause.
+
+### Logging
+
+- **Log once, at the top.** Logging at every catch creates duplicate noise.
+- Never log and re-throw in the same place — pick one.
+- Log structured data with enough context to debug: request IDs, user IDs, relevant inputs.
+
+One well-designed top-level handler beats fifty defensive `try/catch` blocks.
+
 ---
 
 ## See also
