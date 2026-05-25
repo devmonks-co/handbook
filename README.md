@@ -13,6 +13,7 @@ For company-wide policies (leave, benefits, hiring, general communication, day-t
 - [Prompting AI tools](prompting.md) — how to write clear, direct prompts
 - [Git conventions](git.md) — branching, commits, workflow
 - [Code review](code-review.md) — review process and standards
+- [Huly](huly.md) — task tracking, issue lifecycle, and timelines
 
 ## Philosophy
 
