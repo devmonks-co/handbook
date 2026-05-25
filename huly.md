@@ -17,14 +17,15 @@ Use the **activity comments** for any updates, blockers, or decisions — not DM
 ## Issue lifecycle
 
 ```
-Todo → In Progress → In Review → Completed
-                  ↑         |
-                  └─────────┘ (if changes needed)
+Backlog → Todo → In Progress → In Review → Completed
+                            ↑         |
+                            └─────────┘ (if changes needed)
 ```
 
 | Status | When |
 |--------|------|
-| **Todo** | Issue created, not yet started |
+| **Backlog** | Issue exists but is deferred — touched and acknowledged, not yet scheduled |
+| **Todo** | Scheduled and ready to be picked up |
 | **In Progress** | Work has begun |
 | **In Review** | PR is open; reassign to the reviewer |
 | **Completed** | PR merged and approved |
