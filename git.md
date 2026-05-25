@@ -37,6 +37,26 @@ Optional body explaining why, not what.
 chore: update dependencies to latest patch versions
 ```
 
+## Issues
+
+Create an issue before starting any non-trivial work — new features, requirement changes, bugs worth discussing, or anything planned for a future phase.
+
+**When to open one:**
+- A new requirement or change comes in
+- Something needs team discussion before work begins
+- Work is planned but not starting yet
+
+**What to include:**
+- Clear title — what needs to happen
+- Description — the context, the why, and any constraints
+- Reference related issues, PRs, or tickets if applicable
+
+The team discusses and agrees on a solution path in the issue thread. Work only begins — using the workflow below — after that path is clear.
+
+Every feature branch and PR should reference the issue it resolves.
+
+---
+
 ## Branches
 
 **From a ticket:**
