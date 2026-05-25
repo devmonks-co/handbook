@@ -88,6 +88,24 @@ Always branch from `dev`.
 6. Address review comments, push additional commits to the same branch
 7. A senior engineer merges after approval
 
+## README
+
+Every project repo must have a `README.md`. It is the first thing anyone reads — keep it accurate and up to date.
+
+**Required sections, in order:**
+
+1. **Project name + one-line description** — what it is and what it does
+2. **Quick start** — the minimum steps to clone, configure, and run locally
+3. **Environment setup** — list every required env variable; reference `.env.example`
+4. **Available scripts** — key commands (start, build, test, lint)
+5. **Contributing** — link to this handbook; note the branch and PR workflow
+
+**Rules:**
+- Quick start must actually work — test it on a clean setup
+- No walls of text; use code blocks for commands
+- If a step is not obvious, explain the *why* in one line
+- Keep it current — outdated READMEs are worse than none
+
 ## Rules
 
 - Never force push (`git push -f`) on shared branches. Use `--force-with-lease` if you must.
