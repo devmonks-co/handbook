@@ -16,11 +16,16 @@ Optional body explaining why, not what.
 |------|------|
 | `feat` | New feature |
 | `fix` | Bug fix |
-| `chore` | Dependencies, refactoring, maintenance |
+| `refactor` | Code restructure, no behaviour change |
+| `perf` | Performance improvement |
 | `docs` | Documentation changes |
 | `test` | Adding or updating tests |
-| `deploy` | Deployment-related changes |
 | `style` | Formatting, no logic change |
+| `build` | Build system or dependency changes |
+| `ci` | CI/CD configuration |
+| `deploy` | Deployment-related changes |
+| `chore` | Maintenance tasks that don't fit elsewhere |
+| `revert` | Reverts a previous commit |
 
 ### Rules
 
