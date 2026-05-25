@@ -57,21 +57,36 @@ Every feature branch and PR should reference the issue it resolves.
 
 ---
 
+## Permanent branches
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Production — always stable |
+| `dev` | Active development — all work merges here first |
+
+Never commit directly to either. All changes go through a feature branch and PR.
+
 ## Branches
+
+Use `/devmonks-git:branch` to create branches. It enforces naming and pushes with upstream tracking.
 
 **From a ticket:**
 Use the ticket ID as prefix: `dm-123-add-oauth-login`
 
 **Without a ticket:**
-Use type prefix: `feat-add-oauth-login`, `fix-expired-card`
+Use type prefix: `feat/add-oauth-login`, `fix/expired-card`
+
+Always branch from `dev`.
 
 ## Workflow
 
-1. Branch from `main` (or `development` if the project uses it)
-2. Make focused commits as you work
-3. Open a draft PR early if you want feedback
-4. Rebase onto latest base branch before requesting review
-5. Squash merge into base branch after approval
+1. Clone the repo, then `git checkout dev`
+2. Create a feature branch from `dev` — use `/devmonks-git:branch`
+3. Make changes. Commit atomically — every small, logical change is its own commit — use `/devmonks-git:commit`
+4. Push the branch
+5. Open a PR targeting `dev` — use `/devmonks-git:create-pr`
+6. Address review comments, push additional commits to the same branch
+7. A senior engineer merges after approval
 
 ## Rules
 
