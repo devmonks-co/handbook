@@ -90,8 +90,9 @@ Always branch from `dev`.
 3. Make changes. Commit atomically — every small, logical change is its own commit — use `/devmonks-git:commit`
 4. Push the branch
 5. Open a PR targeting `dev` — use `/devmonks-git:create-pr`
-6. Address review comments, push additional commits to the same branch
-7. A senior engineer merges after approval
+6. Link the PR to its issue: in the PR's right panel under **Development**, select the issue — the issue closes automatically when the PR is merged
+7. Address review comments, push additional commits to the same branch
+8. A senior engineer merges after approval
 
 ## README
 
