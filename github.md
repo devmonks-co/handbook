@@ -2,6 +2,12 @@
 
 How we use GitHub for issues, pull requests, and open-source contributions.
 
+## Repository naming
+
+- All lowercase, hyphens as separators — `my-project`, not `MyProject` or `my_project`
+- Descriptive and specific — name it after what it does, not what it is (`invoice-service`, not `backend`)
+- No version numbers or dates in the name — that belongs in tags and releases
+
 ## Issues
 
 Create an issue before starting any non-trivial work — new features, requirement changes, bugs worth discussing, or anything planned for a future phase.
