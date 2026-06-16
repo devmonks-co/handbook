@@ -24,16 +24,16 @@ name using one global rule set at app startup. The rule must produce:
 
 - A unique ID across the entire API (collisions break codegen)
 - A human-readable name that matches the function (`list_notes`, not `list_notes_api_v1_notes_get`)
-- Stable across refactors — rename the function only when you intend to rename the generated client
+- Stable across refactors — rename the function only when you intend to rename the generated client method
 
 **Name functions as `verb_resource`** (`create_note`, `list_notes`, `get_note`). They are
-unique app-wide by convention and map directly to predictable client names.
+unique app-wide by convention and map directly to predictable generated method names.
 
 ### 2. One tag per resource
 
 All endpoints for a resource share exactly one tag. The tag name is the resource noun
 (`notes`, `projects`, `users`). Codegen groups by tag — one tag per resource means one
-generated file per resource, which maps cleanly to one feature folder on the frontend.
+generated module per resource, which maps cleanly to one feature folder on the frontend.
 
 Never split a resource across multiple tags. Never group multiple resources under one tag.
 
@@ -41,7 +41,7 @@ Never split a resource across multiple tags. Never group multiple resources unde
 
 | Required | Why |
 |---|---|
-| Response schema on every endpoint | No schema → untyped (`any`) in the generated client |
+| Response schema on every endpoint | No schema → untyped in the generated client |
 | Explicit non-200 status codes (201, 204) | Codegen uses the declared status to type the response |
 | One-line description on every endpoint | Codegen lifts it into inline docs on the generated client |
 
@@ -85,7 +85,7 @@ Every list endpoint returns the same envelope:
 ```
 
 `limit` and `offset` are injected automatically by the pagination library — do not
-declare them in the handler signature. The frontend reads `items` and uses `total`
+declare them in the handler signature. The client reads `items` and uses `total`
 for page counts.
 
 ### 8. Schema naming
@@ -118,8 +118,11 @@ Filters and sort options must be emitted as individual query params in the spec,
 single nested object parameter. Individual params produce clean generated function signatures:
 
 ```
-useListNotes({ isImportant?, q?, limit?, offset? })   ✓
-useListNotes({ filters: { isImportant, q } })          ✗  (nested object — codegen emits a $ref param)
+# ✓ individual params — codegen emits clean, addressable arguments
+listNotes({ isImportant?, q?, limit?, offset? })
+
+# ✗ nested object — codegen emits an opaque $ref parameter
+listNotes({ filters: { isImportant, q } })
 ```
 
 Filters apply to list endpoints only. Detail endpoints identify one row by path `id` —
@@ -132,29 +135,29 @@ they have no filter params. Text search and sort order follow the same individua
 ### 1. Never hand-write what the spec already declares
 
 Point the codegen tool at the spec URL and run it after every backend change. The generated
-output provides all URLs, types, query keys, and request shapes. Hand-writing any of these
+output provides all URLs, types, function names, and request shapes. Hand-writing any of these
 creates a second source of truth that silently drifts.
 
 ```
 # run after any backend change
-npm run generate-api   # (or equivalent codegen command)
+<your-codegen-command>   # e.g. openapi-generator, orval, oapi-codegen, kiota
 ```
 
-TypeScript (or your type checker) flags every broken call site immediately after regeneration.
+Your type checker flags every broken call site immediately after regeneration.
 Never edit generated files.
 
 ### 2. Feature facade — one import point per resource
 
 Components never import from generated code directly. Every resource has a facade module
-(`features/<resource>/api.ts`) that re-exports the generated hooks or clients under stable,
-friendly names:
+(`features/<resource>/api`) that re-exports the generated functions or clients under
+stable, friendly names:
 
 ```
-features/notes/api.ts   →  re-exports useNotes, useNote, useCreateNote, …
-features/auth/api.ts    →  re-exports useLogin, useRegister, useVerifyOtp, …
+features/notes/api  →  re-exports listNotes, getNote, createNote, …
+features/auth/api   →  re-exports login, register, verifyOtp, …
 ```
 
-When the backend renames a function (changing the generated hook name), only the facade
+When the backend renames a function (changing the generated name), only the facade
 re-export line changes — not every component that uses it.
 
 The facade is **pure re-exports** — no logic, no wrappers, no transport code. It is an
@@ -163,7 +166,7 @@ alias layer, not a service layer.
 ### 3. One global cache invalidation rule
 
 After any successful mutation, invalidate all active server-state queries. This lives
-**once** at the query client level — not per mutation, not per feature.
+**once** at the data-fetching layer — not per mutation, not per feature.
 
 ```
 on mutation success → invalidate all active queries
@@ -178,10 +181,10 @@ Never sync copies of the same data across multiple layers:
 
 | Kind | Where it lives |
 |---|---|
-| Server data (resources from the API) | Query cache (the generated hooks) |
+| Server data (resources from the API) | Data-fetching cache (the generated client) |
 | Shared page state (filter, page, selection) | URL query params |
-| Global client state (auth token, theme) | Client state store (e.g. Zustand) |
-| Local UI state (dropdown open/closed) | Component state (`useState`) |
+| Global client state (auth token, theme) | Client state store |
+| Local UI state (dropdown open/closed) | Component-local state |
 
 Server data must not be copied into the client state store — that recreates the drift
 problem. Shared page state belongs in the URL so it survives refresh and is linkable.
@@ -199,7 +202,7 @@ problem. Shared page state belongs in the URL so it survives refresh and is link
 **Frontend**
 - Import from generated code inside a component — go through the facade
 - Hand-write a URL, type, or query key the codegen already provides
-- Call the HTTP layer directly (raw `fetch`, `axios`) outside of the generated client
+- Call the HTTP layer directly (raw fetch or HTTP client) outside of the generated client
 - Add per-mutation or per-feature cache invalidation wiring
 - Copy server data into the global client state store
 
