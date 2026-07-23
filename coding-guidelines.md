@@ -69,6 +69,19 @@ If a value might change between environments, between clients, or over time, it 
 
 Don't sprinkle `try/catch` blocks throughout the code. They make logic harder to read and often swallow errors silently.
 
+### Think of the server as a room
+
+A server is a room. Work comes and goes, but the room has a fixed number of **gates** — and every gate gets a **guard**.
+
+- The **main gate** is the request/response cycle: a client walks in with a request, walks out with a response.
+- The **side gates** are the other ways work enters — a cron job waking on a schedule, a webhook from a third party, a message pulled off a queue. No client is waiting, but work is still crossing a threshold.
+
+The rule: **put a guard on every gate, and nowhere else.** The guard checks everyone on the way in, and — the part people forget — on the way out too. Nobody leaves the room unexamined. If something broke inside, the exit guard catches it, decides what the outside world sees, and writes it down once in the logbook.
+
+That is what "handle errors at the top" means. The gates are the top. A `try/catch` buried deep inside is a guard posted in an empty hallway — it blocks the natural flow, usually waves everyone through anyway, and clutters the place. Guard the gates, keep the room clear.
+
+Every entry point — each route handler, cron job, webhook receiver, queue consumer — gets exactly one guard: a top-level handler wrapping it. That is your choke point. Everything else just lets errors walk toward the nearest gate.
+
 ### Default behaviour
 
 - **Let errors propagate** to the top level of the application and handle them in one place.
