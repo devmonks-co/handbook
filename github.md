@@ -21,6 +21,7 @@ Create an issue before starting any non-trivial work — new features, requireme
 - Clear title — what needs to happen
 - Description — the context, the why, and any constraints
 - Reference related issues, PRs, or tickets if applicable
+- For a new feature: an "Options checked" note (see [Research before you build](research.md))
 
 The team discusses and agrees on a solution path in the issue thread. Work only begins — using the workflow below — after that path is clear.
 
