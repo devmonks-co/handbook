@@ -17,7 +17,16 @@ The opening line of a prompt does most of the work. Lead with what you want, pla
 > Something is wrong with my login thing, users are saying it's broken sometimes, can you look at it?
 
 **Clear:**
-> Debug why `signIn()` in `auth/session.ts` intermittently returns a 401 for valid credentials. Start by checking the token expiry logic.
+> `signIn()` in `auth/session.ts` intermittently returns 401 for valid credentials. Trace from a failing request:
+> ```
+> TokenExpiredError: jwt expired
+>     at verifyToken (auth/jwt.ts:42)
+>     at signIn (auth/session.ts:88)
+>   expiredAt: 2026-10-12T09:14:03Z
+> ```
+> The token was issued 2 seconds before this, with a 15-minute lifetime. It only fails on requests that hit `api-2`, whose clock runs ~40s ahead. So it's clock skew, not bad credentials. Add a 60s `clockTolerance` to the `jwt.verify` call in `verifyToken`. Don't change the token lifetime.
+
+The clear version gives the agent the evidence, your reading of it, and the exact change. You did the understanding; the agent does the typing.
 
 ---
 
@@ -38,6 +47,16 @@ Examples:
 - *"Refactor this function to remove the nested if-statements without changing behaviour."*
 - *"Generate a Postgres migration that adds an index on `users.email`."*
 - *"Explain why this test is flaky and propose a fix."*
+
+### For bugs
+
+```
+[What's broken] + [the evidence: trace, log, failing input] + [what you think it means] + [what to change, and what not to touch]
+```
+
+- **Always paste the evidence.** The error trace, the log line, the input that fails. Never just the symptom.
+- **Say what you think it means.** Reading the trace yourself is how you stay able to check the fix.
+- **Don't know the cause yet?** Ask the agent to find and explain the root cause first, and to stop before fixing. Fix once you understand it.
 
 ## Why this matters
 
