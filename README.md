@@ -8,14 +8,24 @@ For company-wide policies (leave, benefits, hiring, general communication, day-t
 
 ## What's in here
 
-- [Principles](principles.md) — our mantra and working principles, including AI usage rules
-- [Definition of done](definition-of-done.md) — when work counts as finished, status words, when to escalate
-- [Ownership](ownership.md) — what owning your work means here
-- [Coding guidelines](coding-guidelines.md) — how we actually write code
-- [Prompting AI tools](prompting.md) — how to write clear, direct prompts
-- [Git conventions](git.md) — commit format, branch naming, rules
-- [GitHub conventions](github.md) — issues, PR workflow, README, open-source contributions
-- [Code review](code-review.md) — review process and standards
+**Principles: why we work this way**
+
+- [Principles](principles.md): our mantra and working principles, including AI usage rules
+- [Ownership](ownership.md): what owning your work means here
+
+**Standards: the rules**
+
+- [Definition of done](definition-of-done.md): when work counts as finished, status words, when to escalate
+- [Coding guidelines](coding-guidelines.md): how we actually write code
+- [API contract](api-contract.md): OpenAPI as the single source of truth between backend and frontend
+- [Git conventions](git.md): commit format, branch naming, rules
+- [Prompting AI tools](prompting.md): how to write clear, direct prompts
+
+**Plays: what to do when**
+
+- [Research before you build](research.md): before any feature, check what already exists
+- [GitHub conventions](github.md): issues, PR workflow, README, open-source contributions
+- [Code review](code-review.md): review process and standards
 
 ## Philosophy
 

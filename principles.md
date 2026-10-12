@@ -8,6 +8,8 @@ It's a loop, not a line. If implementation reveals that the plan was wrong — b
 
 Looping back is cheap. Pushing through a broken plan is expensive.
 
+For how to do the Research step, see [Research before you build](research.md).
+
 ---
 
 ## 1. Use AI, own every line
