@@ -42,6 +42,8 @@ If you're stuck for more than 30 minutes:
 
 There's no penalty for not knowing something. There is for staying stuck silently.
 
+Blocked on a person or thing rather than a problem? That's a 2-hour rule. See [definition of done](definition-of-done.md#when-to-raise-your-hand).
+
 ## 3. Be proactive — raise problems with solutions
 
 If you spot something wrong — a bug, a bad pattern, a risk, a confusing decision — **say something**. But don't just dump the problem on someone else's plate.
